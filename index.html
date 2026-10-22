@@ -25,17 +25,17 @@
   header h1 { margin:0; font:600 34px/1 var(--head); letter-spacing:.14em; }
   header p { margin:6px 0 0; font:500 14px/1 var(--head); letter-spacing:.32em; color:var(--muted); }
 
-  #panel { top:22px; right:22px; width:340px; background:var(--panel); border:1px solid var(--line);
+  #panel { top:22px; right:22px; width:380px; background:var(--panel); border:1px solid var(--line);
            border-radius:10px; box-shadow:0 1px 0 #fff inset; overflow:hidden; }
-  .ph { display:flex; justify-content:space-between; align-items:center; padding:12px 16px;
-        border-bottom:1px solid var(--line); font:600 14px var(--head); letter-spacing:.1em; }
-  .ph span:last-child { color:var(--muted); font-weight:500; }
+  .ph { display:flex; gap:18px; padding:0 16px; border-bottom:1px solid var(--line); font:600 13px var(--head); letter-spacing:.08em; }
+  .tab { padding:12px 0 10px; color:var(--muted); border-bottom:2.5px solid transparent; margin-bottom:-1px; transition:color .3s, border-color .3s; white-space:nowrap; }
+  .tab.on { color:var(--ink); border-color:var(--ink); }
   .pb { padding:14px 16px 16px; }
   #title { margin:0; font:700 24px/1.1 var(--head); letter-spacing:.04em; text-transform:uppercase; transition:color .3s; }
   #title.bad { color:var(--red); } #title.good { color:var(--green); }
   #desc { margin:6px 0 14px; font-size:15px; line-height:1.4; color:#4b4a46; min-height:42px; }
   .label { font:600 12px var(--head); letter-spacing:.14em; color:var(--muted); margin:0 0 6px; }
-  #slots { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-bottom:14px; }
+  #slots { display:grid; grid-auto-flow:column; grid-auto-columns:1fr; gap:6px; margin-bottom:14px; }
   #slots div { height:30px; border-radius:6px; border:1.5px dashed #c9b893; display:grid; place-items:center;
                font:700 15px var(--head); color:#fff; }
   #slots div.on { border-style:solid; border-color:rgba(0,0,0,.25); }
@@ -51,15 +51,17 @@
 
   #bottom { left:28px; right:28px; bottom:20px; }
   #bottom h2 { margin:0 0 8px; font:600 16px var(--head); letter-spacing:.14em; }
-  #options { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  #options { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
   .opt { background:var(--panel); border:1.5px solid var(--line); border-radius:10px; padding:12px 16px;
          display:flex; align-items:center; gap:14px; transition:border-color .3s, box-shadow .3s; }
   .opt.active { border-color:var(--accent); box-shadow:0 0 0 3px rgba(47,111,115,.12); }
-  .opt h3 { margin:0; font:700 15px var(--head); letter-spacing:.12em; white-space:nowrap; }
+  .opt h3 { margin:0; font:700 15px var(--head); letter-spacing:.12em; white-space:nowrap; line-height:1.15; }
+  .opt h3 small { display:block; font:600 11px var(--head); letter-spacing:.14em; color:var(--muted); }
   .chips { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
   .chip { color:#fff; font:600 13px var(--head); letter-spacing:.04em; padding:3px 9px; border-radius:5px;
           box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.2); }
   .chip.x { opacity:.4; text-decoration:line-through; }
+  .yes { font:600 13px var(--head); letter-spacing:.08em; color:var(--green); white-space:nowrap; }
   .nos { font:600 13px var(--head); letter-spacing:.08em; color:var(--red); white-space:nowrap; display:inline-flex; gap:6px; align-items:center; }
 
   #tools { left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:8px; }
@@ -75,11 +77,13 @@
     header { top:14px; left:16px; } header svg { width:40px; height:40px; }
     header h1 { font-size:24px; } header p { font-size:11px; letter-spacing:.24em; }
     #panel { top:74px; left:12px; right:12px; width:auto; }
-    #panel .ph, #slots, #panel .label, #teams { display:none; }
+    #slots, #panel .label, #teams { display:none; }
+    .ph { gap:14px; font-size:11px; padding:0 14px; } .tab { padding:9px 0 7px; }
     #panel .pb { padding:10px 14px; } #desc { margin:4px 0 0; min-height:0; font-size:14px; }
     #title { font-size:19px; }
     #bottom { left:12px; right:12px; bottom:12px; }
-    #options { grid-template-columns:1fr; gap:8px; } .opt { padding:8px 12px; }
+    #options { grid-template-columns:1fr; gap:6px; } .opt { padding:6px 10px; gap:10px; }
+    #bottom h2 { display:none; } .chip { font-size:11px; padding:2px 6px; } .nos, .yes { font-size:11px; }
     .hint { display:none; }
   }
 </style>
@@ -93,23 +97,23 @@
     <path d="M6 6h17a5 5 0 1 1 8 0h17v17a5 5 0 1 0 0 8v17H31a5 5 0 1 0-8 0H6V31a5 5 0 1 1 0-8z"
           fill="#3a5bb8" stroke="#232838" stroke-width="2.5" stroke-linejoin="round"/>
   </svg>
-  <div><h1>TEAM PUZZLE</h1><p>FOUR TEAMS · ROOM FOR THREE</p></div>
+  <div><h1>TEAM PUZZLE</h1><p>WHAT WE WANT · WHAT FITS</p></div>
 </header>
 
 <aside id="panel" class="ui">
-  <div class="ph"><span>WALKTHROUGH</span><span id="stepNo">1 / 6</span></div>
+  <div class="ph"><span class="tab" id="tab1">1 · WHAT MANAGEMENT WANTS</span><span class="tab" id="tab2">2 · ACTUAL SITUATION</span></div>
   <div class="pb">
     <h2 id="title">&nbsp;</h2>
     <p id="desc">&nbsp;</p>
-    <p class="label">BOARD · 3 SLOTS</p>
-    <div id="slots"><div></div><div></div><div></div></div>
+    <p class="label" id="slotsLabel">BOARD</p>
+    <div id="slots"></div>
     <p class="label">TEAMS</p>
     <div id="teams"></div>
   </div>
 </aside>
 
 <section id="bottom" class="ui">
-  <h2>OPTIONS</h2>
+  <h2>WANTED VS ACTUAL</h2>
   <div id="options"></div>
 </section>
 
@@ -143,7 +147,6 @@ const S = 2;          // piece size
 const T = 0.5;        // piece thickness
 const FLOOR = 0.3;    // tray floor height
 const RIM = 0.5;      // tray rim width
-const SLOT_X = [-2, 0, 2], SLOT_Z = -2;
 const HOME = { A: [-4.35, 2.5], B: [-1.45, 2.5], C: [1.45, 2.5], D: [4.35, 2.5] };
 const INK = '#232838';
 
@@ -289,29 +292,7 @@ scene.add(ground);
   scene.add(grid);
 }
 
-// Tray: tan base, cream rim with a 3-slot opening, dashed joints on the floor
-const X0 = -3, X1 = 3, Z0 = -3, Z1 = -1;
-const tray = new THREE.Group();
-tray.add(outlined(extrude(roundRect(X0 - RIM - 0.15, Z0 - RIM - 0.15, X1 + RIM + 0.15, Z1 + RIM + 0.15, 0.45), FLOOR, 0, 6), toon('#d4b98c')));
-const rimShape = roundRect(X0 - RIM, Z0 - RIM, X1 + RIM, Z1 + RIM, 0.35);
-const gap = 0.03;
-rimShape.holes.push(roundRect(X0 - gap, Z0 - gap, X1 + gap, Z1 + gap, 0.001, new THREE.Path()));
-const rimMat = toon('#f3e9d4');
-const rim = outlined(extrude(rimShape, T, FLOOR, 6), rimMat);
-tray.add(rim);
-const dashMat = new THREE.LineDashedMaterial({ color: '#94784f', dashSize: 0.12, gapSize: 0.09 });
-for (const jx of [-1, 1]) {
-  const p = new THREE.Path();
-  p.moveTo(jx, Z0);
-  traceEdge(p, [jx, Z0], [jx, Z1], 1);
-  const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(
-    p.getPoints(24).map(v => new THREE.Vector3(v.x, FLOOR + 0.004, v.y))), dashMat);
-  line.computeLineDistances();
-  tray.add(line);
-}
-scene.add(tray);
-
-// Front rim: printed label and three slot LEDs
+// Front rim: printed label and slot LEDs
 function canvasTexture(w, h, draw) {
   const c = document.createElement('canvas'); c.width = w; c.height = h;
   draw(c.getContext('2d'), w, h);
@@ -326,24 +307,48 @@ function flatPlane(w, h, tex) {
   return m;
 }
 const FONT = '"Barlow Semi Condensed", "Arial Narrow", sans-serif';
+const Z0 = -3, Z1 = -1, SLOT_Z = -2;
 const rimTop = FLOOR + T, rimZ = Z1 + RIM / 2;
-const leds = [1.75, 2.25, 2.75].map(x => {
-  const led = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.13, 0.08, 24), new THREE.MeshBasicMaterial({ color: '#8f8a7a' }));
-  led.position.set(x, rimTop + 0.04, rimZ);
-  const ring = new THREE.Mesh(new THREE.RingGeometry(0.13, 0.17, 24), new THREE.MeshBasicMaterial({ color: INK }));
-  ring.rotation.x = -Math.PI / 2; ring.position.set(x, rimTop + 0.003, rimZ);
-  tray.add(led, ring);
-  return led;
-});
-let capLabel;
-function makeRimLabel() {
-  capLabel = flatPlane(4.2, 0.42, canvasTexture(1400, 140, (ctx, w, h) => {
+const dashMat = new THREE.LineDashedMaterial({ color: '#94784f', dashSize: 0.12, gapSize: 0.09 });
+
+// Tray with n slots: tan base, cream rim around the opening, dashed joints on the floor
+function buildTray(n) {
+  const X1 = n, X0 = -n, group = new THREE.Group();
+  group.add(outlined(extrude(roundRect(X0 - RIM - 0.15, Z0 - RIM - 0.15, X1 + RIM + 0.15, Z1 + RIM + 0.15, 0.45), FLOOR, 0, 6), toon('#d4b98c')));
+  const rimShape = roundRect(X0 - RIM, Z0 - RIM, X1 + RIM, Z1 + RIM, 0.35);
+  const gap = 0.03;
+  rimShape.holes.push(roundRect(X0 - gap, Z0 - gap, X1 + gap, Z1 + gap, 0.001, new THREE.Path()));
+  const rimMat = toon('#f3e9d4');
+  group.add(outlined(extrude(rimShape, T, FLOOR, 6), rimMat));
+  for (let i = 1; i < n; i++) {
+    const jx = X0 + 2 * i, p = new THREE.Path();
+    p.moveTo(jx, Z0);
+    traceEdge(p, [jx, Z0], [jx, Z1], 1);
+    const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(
+      p.getPoints(24).map(v => new THREE.Vector3(v.x, FLOOR + 0.004, v.y))), dashMat);
+    line.computeLineDistances();
+    group.add(line);
+  }
+  const leds = [];
+  for (let i = 0; i < n; i++) {
+    const x = X1 - 0.25 - (n - 1 - i) * 0.5;
+    const led = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.13, 0.08, 24), new THREE.MeshBasicMaterial({ color: '#8f8a7a' }));
+    led.position.set(x, rimTop + 0.04, rimZ);
+    const ring = new THREE.Mesh(new THREE.RingGeometry(0.13, 0.17, 24), new THREE.MeshBasicMaterial({ color: INK }));
+    ring.rotation.x = -Math.PI / 2; ring.position.set(x, rimTop + 0.003, rimZ);
+    group.add(led, ring);
+    leds.push(led);
+  }
+  const label = flatPlane(4.2, 0.42, canvasTexture(1400, 140, (ctx, w, h) => {
     ctx.fillStyle = '#5c5444'; ctx.font = `600 84px ${FONT}`; ctx.textBaseline = 'middle';
     ctx.letterSpacing = '14px';
-    ctx.fillText('CAPACITY · 3 TEAMS', 10, h / 2 + 4);
+    ctx.fillText(`CAPACITY · ${n} TEAMS`, 10, h / 2 + 4);
   }));
-  capLabel.position.set(-1.0, rimTop + 0.003, rimZ);
-  tray.add(capLabel);
+  label.position.set(X0 + 2.2, rimTop + 0.003, rimZ);
+  group.add(label);
+  scene.add(group);
+  const slotX = Array.from({ length: n }, (_, i) => X0 + 1 + 2 * i);
+  return { n, group, rimMat, leds, slotX };
 }
 
 // Pieces
@@ -424,41 +429,63 @@ function setReject(k, on) {
 const slotOf = { A: null, B: null, C: null, D: null };
 const status = { A: '', B: '', C: '', D: '' };
 const $ = id => document.getElementById(id);
+let TRAYS, tray;
 function renderPanel() {
   const slots = $('slots').children;
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < tray.n; i++) {
     const k = Object.keys(slotOf).find(t => slotOf[t] === i);
     slots[i].textContent = k || '';
     slots[i].style.background = k ? TEAMS[k].color : 'transparent';
     slots[i].classList.toggle('on', !!k);
-    leds[i].material.color.set(k ? '#3ddc76' : '#8f8a7a');
+    tray.leds[i].material.color.set(k ? '#3ddc76' : '#8f8a7a');
   }
-  const full = Object.values(slotOf).filter(v => v !== null).length === 3;
-  rimMat.color.set(full ? '#e3f3dc' : '#f3e9d4');
+  const full = Object.values(slotOf).filter(v => v !== null).length === tray.n;
+  tray.rimMat.color.set(full ? '#e3f3dc' : '#f3e9d4');
   $('teams').innerHTML = Object.entries(TEAMS).map(([k, t]) => {
     const s = slotOf[k] !== null ? 'in' : status[k];
     const tag = s === 'in' ? 'IN' : s === 'out' ? 'NO SPACE' : '';
     return `<div class="team ${s}"><i style="background:${t.color}">${k}</i>${t.full}${tag ? `<b>${tag}</b>` : ''}</div>`;
   }).join('');
 }
-let stepIdx = 0;
-const STEPS = 6;
-function say(title, desc, tone = '', option = 0) {
-  stepIdx++;
-  $('stepNo').textContent = `${stepIdx} / ${STEPS}`;
+function showTray(n) {
+  for (const t of Object.values(TRAYS)) { t.group.visible = t.n === n; t.group.scale.set(1, 1, 1); }
+  tray = TRAYS[n];
+  $('slots').innerHTML = '<div></div>'.repeat(n);
+  $('slotsLabel').textContent = `BOARD · ${n} SLOTS`;
+  renderPanel();
+}
+// The board stretches or shrinks to the new size, then swaps to the real n-slot tray
+async function resizeTray(n) {
+  const from = tray.group, k = n / tray.n;
+  await tween(900, p => { from.scale.x = 1 + (k - 1) * ease(p); });
+  showTray(n);
+  await squash3(tray.group);
+}
+async function squash3(g) {
+  await tween(240, p => { const s = Math.sin(Math.PI * p) * 0.08; g.scale.set(1 + s * 0.2, 1 - s, 1 + s * 0.2); });
+  g.scale.set(1, 1, 1);
+}
+function say(title, desc, tone = '', card = 0) {
   $('title').textContent = title;
   $('title').className = tone;
   $('desc').textContent = desc;
-  document.querySelectorAll('.opt').forEach((el, i) => el.classList.toggle('active', option === i + 1));
+  document.querySelectorAll('.opt').forEach((el, i) => el.classList.toggle('active', card === i + 1));
+}
+function setStage(n) {
+  $('tab1').classList.toggle('on', n === 1);
+  $('tab2').classList.toggle('on', n === 2);
 }
 const chip = (k, x = '') => `<span class="chip ${x}" style="background:${TEAMS[k].color}">${k} · ${TEAMS[k].full}</span>`;
-$('options').innerHTML = [['A', 'B', 'D', 'C'], ['A', 'C', 'D', 'B']].map((o, i) =>
-  `<div class="opt"><h3>OPTION ${i + 1}</h3><div class="chips">${o.slice(0, 3).map(k => chip(k)).join('')}
+$('options').innerHTML =
+  `<div class="opt"><h3><small>MANAGEMENT</small>WANTS</h3><div class="chips">${['A', 'B', 'C', 'D'].map(k => chip(k)).join('')}
+   <span class="yes">ALL FOUR FIT</span></div></div>` +
+  [['A', 'B', 'D', 'C'], ['A', 'C', 'D', 'B']].map((o, i) =>
+  `<div class="opt"><h3><small>ACTUAL</small>OPTION ${i + 1}</h3><div class="chips">${o.slice(0, 3).map(k => chip(k)).join('')}
    <span class="nos">NO SPACE FOR ${chip(o[3], 'x')}</span></div></div>`).join('');
 
 async function fitIn(k, slot) {
   status[k] = '';
-  await move(k, SLOT_X[slot], SLOT_Z, FLOOR);
+  await move(k, tray.slotX[slot], SLOT_Z, FLOOR);
   slotOf[k] = slot;
   renderPanel();
   await squash(k);
@@ -468,49 +495,69 @@ async function takeOut(k) {
   slotOf[k] = null; renderPanel();
   await move(k, ...HOME[k], 0);
 }
+async function allHome(keys) {
+  for (const k of keys) slotOf[k] = null;
+  renderPanel();
+  await Promise.all(keys.map((k, i) => sleep(i * 120).then(() => move(k, ...HOME[k], 0))));
+}
 async function reject(k) {
-  const top = FLOOR + T + 0.02, g = P[k].group;
-  await move(k, SLOT_X[1], SLOT_Z, top + 1.1, { dur: 1050, lift: 1.0 });
+  const top = FLOOR + T + 0.02, g = P[k].group, x = tray.slotX[1];
+  await move(k, x, SLOT_Z, top + 1.1, { dur: 1050, lift: 1.0 });
   await tween(240, p => { g.position.y = top + 1.1 * (1 - p * p); });   // drops onto the occupied slot
   status[k] = 'out'; setReject(k, true); renderPanel();
   await tween(420, p => { g.position.y = top + 0.4 * Math.abs(Math.sin(Math.PI * 2 * p)) * (1 - p); });
-  await tween(600, p => { g.position.x = SLOT_X[1] + 0.2 * Math.sin(p * Math.PI * 6) * (1 - p); });
+  await tween(600, p => { g.position.x = x + 0.2 * Math.sin(p * Math.PI * 6) * (1 - p); });
   await sleep(1500);
   setReject(k, false);
   await move(k, ...HOME[k], 0, { dur: 950, lift: 1.4 });
 }
 
 async function cycle() {
-  stepIdx = 0;
   for (const k in status) status[k] = '';
-  renderPanel();
-  say('Four teams, three slots', 'The board only holds three pieces at a time.');
-  await sleep(2200);
+  if (tray.n !== 4) await resizeTray(4);
 
-  say('Option 1', 'Project / Product, Engineering and QA go in.', '', 1);
+  // Stage 1: what management wants
+  setStage(1);
+  say('What management wants', 'A board with room for all four teams.', '', 1);
+  await sleep(2000);
+  await fitIn('A', 0);
+  await fitIn('B', 1);
+  await fitIn('C', 2);
+  await fitIn('D', 3);
+  say('All four fit', 'Project / Product, Engineering, Architect and QA, all in place.', 'good', 1);
+  await sleep(3000);
+  await allHome(['A', 'B', 'C', 'D']);
+  await sleep(500);
+
+  // Stage 2: the actual situation
+  setStage(2);
+  say('The actual situation', 'The real board only has room for three teams.');
+  await sleep(800);
+  await resizeTray(3);
+  await sleep(1400);
+
+  say('Option 1', 'Project / Product, Engineering and QA go in.', '', 2);
   await fitIn('A', 0);
   await fitIn('B', 1);
   await fitIn('D', 2);
   await sleep(400);
-  say('No space for Architect', 'The board is full. The Architect piece has nowhere to go.', 'bad', 1);
+  say('No space for Architect', 'The board is full. The Architect piece has nowhere to go.', 'bad', 2);
   await reject('C');
   await sleep(700);
 
-  say('Option 2', 'Take Engineering out to make room for Architect.', '', 2);
+  say('Option 2', 'Take Engineering out to make room for Architect.', '', 3);
   await takeOut('B');
   await fitIn('C', 1);
   await sleep(400);
-  say('No space for Engineering', 'Now Engineering is the one left out.', 'bad', 2);
+  say('No space for Engineering', 'Now Engineering is the one left out.', 'bad', 3);
   status.C = '';
   await reject('B');
   await sleep(700);
 
-  say('Only three fit', 'Whichever three go in, the fourth is left out.', 'good');
-  await sleep(2600);
-  for (const k of ['A', 'C', 'D']) slotOf[k] = null;
+  say('Only three fit', 'Whichever three go in, the fourth is left out.', 'bad');
+  await sleep(3000);
   status.B = '';
-  renderPanel();
-  await Promise.all(['A', 'C', 'D'].map((k, i) => sleep(i * 120).then(() => move(k, ...HOME[k], 0))));
+  await allHome(['A', 'C', 'D']);
   await sleep(900);
 }
 
@@ -570,9 +617,9 @@ addEventListener('resize', () => { placeTools(); layout(); });
 
 // ---------- Boot ----------
 await Promise.race([document.fonts.load(`600 40px ${FONT}`), new Promise(r => setTimeout(r, 2500))]);
-makeRimLabel();
+TRAYS = { 4: buildTray(4), 3: buildTray(3) };
 makePieces();
-renderPanel();
+showTray(4);
 placeTools();
 layout();
 
